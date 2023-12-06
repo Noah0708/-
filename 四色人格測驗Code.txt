@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇幻彩色森林測驗</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #quiz-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>奇幻彩色森林：揭開心靈彩虹之謎</h1>
+    <p>歡迎來到彩色森林之旅，一趟心靈的奇幻冒險。</p>
+    <button onclick="startQuiz()">進入森林</button>
+
+    <div id="quiz-container">
+        <h2 id="question-title"></h2>
+        <div id="options-container"></div>
+        <button onclick="nextQuestion()">繼續前進</button>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "彩虹橋上的邂逅： 你走到一座彩虹橋前，橋的另一端站著一群陌生的人。他們看起來友好，其中一位招手邀請你加入。你會：",
+                options: ["A. 快步走向他們，好奇地了解他們的故事。", "B. 考慮一下，然後決定繼續探索其他地方。"]
+            },
+            {
+                question: "魔法花園的選擇： 你來到一個充滿魔法花朵的花園，每朵花都有一種不同的光芒。你決定：",
+                options: ["A. 跟著花光芒最亮的方向走，探索花園的深處。", "B. 選擇一朵花坐下來，細細品味每一種光芒的奇妙。"]
+            },
+            {
+                question: "小溪旁的瀑布： 在小溪旁，你發現一個令人驚豔的瀑布。你選擇：",
+                options: ["A. 打破寂靜，大聲歡呼，讓整個森林都知道你的存在。", "B. 靜靜地欣賞瀑布，享受這片寧靜的美好。"]
+            },
+            {
+                question: "星空下的晚餐： 夜幕降臨，你發現一片空地上擺放著一張漂亮的餐桌，上面擺滿了美味的食物。你會：",
+                options: ["A. 邀請其他森林的居民一起分享美食，營造歡樂的氛圍。", "B. 選擇獨自享用晚餐，沉浸在寧靜的星空之下。"]
+            },
+            {
+                question: "道路分叉的抉擇： 你遇到了一個道路分叉，分別通向不同的區域。你決定：",
+                options: ["A. 走向通往山區的路，追求挑戰和冒險。", "B. 選擇通向花海的路，追求舒適和寧靜。"]
+            },
+            {
+                question: "與奇異生物的對話： 在一片神秘的樹叢中，你遇到了一些奇異的生物。你會：",
+                options: ["A. 積極與它們交流，試圖了解它們的想法和感受。", "B. 留下一些小禮物，然後繼續前行。"]
+            },
+            {
+                question: "森林之心的決定： 最後，你抵達了森林的中心，這裡被稱為「森林之心」。在這裡，你感受到一種強烈的能量，彩虹色的光芒在空中舞動。你會：",
+                options: ["A. 融入光芒，與其他探險者共同慶祝這個奇妙的瞬間。", "B. 靜靜地感受光芒，獨自思考你在這趟旅程中學到的一切。"]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        const userAnswers = [];
+
+        function startQuiz() {
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('button').style.display = 'none';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            document.getElementById('question-title').textContent = currentQuestion.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = "";
+
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement('button');
+                optionButton.textContent = option;
+                optionButton.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionButton);
+            });
+        }
+
+        function selectOption(index) {
+            userAnswers.push(index);
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const animalNames = ["金色（Gold） - 獅子", "綠色（Green） - 烏龜", "藍色（Blue） - 天鵝", "橙色（Orange） - 猴子"];
+            const animalDescriptions = [
+                "堅定、負責、組織者，擁有領導特質，保護自己和他人。",
+                "冷靜、理性、沉著冷靜，擁有堅實的思考力，善於分析問題。",
+                "情感豐富、同理心強，善於與他人建立深厚的人際關係，追求和諧。",
+                "活潑、有活力、喜愛冒險，充滿創意和樂觀的態度，愛追求刺激。"
+            ];
+
+            const abilityValues = [
+                { 活躍度: 8, 領導力: 9, 智慧值: 7, 力量值: 10, 敏捷度: 7 },
+                { 活躍度: 5, 領導力: 6, 智慧值: 9, 力量值: 6, 敏捷度: 4 },
+                { 活躍度: 6, 領導力: 7, 智慧值: 8, 力量值: 5, 敏捷度: 6 },
+                { 活躍度: 9, 領導力: 8, 智慧值: 6, 力量值: 8, 敏捷度: 9 }
+            ];
+
+            const resultIndex = userAnswers.reduce((acc, answer) => acc + answer, 0) % 4;
+            const animalName = animalNames[resultIndex];
+            const animalDescription = animalDescriptions[resultIndex];
+            const abilityValue = abilityValues[resultIndex];
+
+            const resultContainer = document.createElement('div');
+            resultContainer.innerHTML = `
+                <p><strong>你的True Colors動物：</strong> ${animalName}</p>
+                <p><strong>描述：</strong> ${animalDescription}</p>
+                <p><strong>能力值：</strong></p>
+                <ul>
+                    <li>活躍度: ${abilityValue.活躍度}</li>
+                    <li>領導力: ${abilityValue.領導力}</li>
+                    <li>智慧值: ${abilityValue.智慧值}</li>
+                    <li>力量值: ${abilityValue.力量值}</li>
+                    <li>敏捷度: ${abilityValue.敏捷度}</li>
+                </ul>
+            `;
+            document.getElementById('quiz-container').appendChild(resultContainer);
+        }
+    </script>
+</body>
+</html>
